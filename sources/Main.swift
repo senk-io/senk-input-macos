@@ -15,10 +15,10 @@ struct SquirrelApp {
   } else {
     try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("Rime", isDirectory: true)
   }
-  static let appDir = "/Library/Input Library/Squirrel.app".withCString { dir in
+  static let appDir = "/Library/Input Methods/SenkWubi.app".withCString { dir in
     URL(fileURLWithFileSystemRepresentation: dir, isDirectory: false, relativeTo: nil)
   }
-  static let logDir = FileManager.default.temporaryDirectory.appending(component: "rime.squirrel", directoryHint: .isDirectory)
+  static let logDir = FileManager.default.temporaryDirectory.appending(component: "rime.senk", directoryHint: .isDirectory)
 
   // swiftlint:disable:next cyclomatic_complexity
   static func main() {
@@ -35,7 +35,7 @@ struct SquirrelApp {
           runningSquirrels.forEach { $0.terminate() }
           return true
         case "--reload":
-          DistributedNotificationCenter.default().postNotificationName(.init("SquirrelReloadNotification"), object: nil)
+          DistributedNotificationCenter.default().postNotificationName(.init("SenkWubiReloadNotification"), object: nil)
           return true
         case "--register-input-source", "--install":
           installer.register()
@@ -72,13 +72,13 @@ struct SquirrelApp {
           SquirrelApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_update", comment: ""))
           // Build all schemas in current directory
           var builderTraits = RimeTraits.rimeStructInit()
-          builderTraits.setCString("rime.squirrel-builder", to: \.app_name)
+          builderTraits.setCString("rime.senk-builder", to: \.app_name)
           rimeAPI.setup(&builderTraits)
           rimeAPI.deployer_initialize(nil)
           _ = rimeAPI.deploy()
           return true
         case "--sync":
-          DistributedNotificationCenter.default().postNotificationName(.init("SquirrelSyncNotification"), object: nil)
+          DistributedNotificationCenter.default().postNotificationName(.init("SenkWubiSyncNotification"), object: nil)
           return true
         case "--help":
           print(helpDoc)

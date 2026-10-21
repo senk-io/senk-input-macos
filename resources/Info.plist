@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>TISInputSourceID</key>
-	<string>im.rime.inputmethod.Squirrel</string>
+	<string>io.senk.inputmethod.SenkWubi</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -26,10 +26,10 @@
 	<dict>
 		<key>tsInputModeListKey</key>
 		<dict>
-			<key>im.rime.inputmethod.Squirrel.Hans</key>
+			<key>io.senk.inputmethod.SenkWubi.Wubi</key>
 			<dict>
 				<key>TISInputSourceID</key>
-				<string>im.rime.inputmethod.Squirrel.Hans</string>
+				<string>io.senk.inputmethod.SenkWubi.Wubi</string>
 				<key>TISIntendedLanguage</key>
 				<string>zh-Hans</string>
 				<key>tsInputModeAlternateMenuIconFileKey</key>
@@ -54,18 +54,18 @@
 				<key>tsInputModeScriptKey</key>
 				<string>smUnicodeScript</string>
 			</dict>
-			<key>im.rime.inputmethod.Squirrel.Hant</key>
+			<key>io.senk.inputmethod.SenkWubi.Pinyin</key>
 			<dict>
 				<key>TISInputSourceID</key>
-				<string>im.rime.inputmethod.Squirrel.Hant</string>
+				<string>io.senk.inputmethod.SenkWubi.Pinyin</string>
 				<key>TISIntendedLanguage</key>
-				<string>zh-Hant</string>
+				<string>zh-Hans</string>
 				<key>tsInputModeAlternateMenuIconFileKey</key>
 				<string>rime.pdf</string>
 				<key>tsInputModeCharacterRepertoireKey</key>
 				<array>
-					<string>Hant</string>
 					<string>Hans</string>
+					<string>Hant</string>
 				</array>
 				<key>tsInputModeDefaultStateKey</key>
 				<false/>
@@ -85,12 +85,12 @@
 		</dict>
 		<key>tsVisibleInputModeOrderedArrayKey</key>
 		<array>
-			<string>im.rime.inputmethod.Squirrel.Hans</string>
-			<string>im.rime.inputmethod.Squirrel.Hant</string>
+			<string>io.senk.inputmethod.SenkWubi.Wubi</string>
+			<string>io.senk.inputmethod.SenkWubi.Pinyin</string>
 		</array>
 	</dict>
 	<key>InputMethodConnectionName</key>
-	<string>Squirrel_Connection</string>
+	<string>SenkWubi_Connection</string>
 	<key>InputMethodServerControllerClass</key>
 	<string>Squirrel.SquirrelInputController</string>
 	<key>InputMethodServerDelegateClass</key>
@@ -102,11 +102,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUFeedURL</key>
-	<string>https://rime.github.io/release/squirrel/appcast.xml</string>
-	<key>SUPublicEDKey</key>
-	<string>ukvWq2dKOWn3B9AsdsQIwOptiDdDKdUjAVNgFxSvB2o=</string>
+	<false/>
 	<key>TICapsLockLanguageSwitchCapable</key>
 	<true/>
 	<key>SUEnableInstallerLauncherService</key>

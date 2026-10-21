@@ -10,9 +10,9 @@ import InputMethodKit
 
 final class SquirrelInstaller {
   enum InputMode: String, CaseIterable {
-    static let primary = Self.hans
-    case hans = "im.rime.inputmethod.Squirrel.Hans"
-    case hant = "im.rime.inputmethod.Squirrel.Hant"
+    static let primary = Self.wubi
+    case wubi = "io.senk.inputmethod.SenkWubi.Wubi"
+    case pinyin = "io.senk.inputmethod.SenkWubi.Pinyin"
   }
   private lazy var inputSources: [String: TISInputSource] = {
     var inputSources = [String: TISInputSource]()

@@ -5,6 +5,7 @@
 //  Created by Leo Liu on 5/7/24.
 //
 
+import Carbon
 import InputMethodKit
 
 final class SquirrelInputController: IMKInputController {
@@ -28,6 +29,12 @@ final class SquirrelInputController: IMKInputController {
   private var chordTimer: Timer?
   private var chordDuration: TimeInterval = 0
   private var currentApp: String = ""
+  // SENK：系统输入法菜单里的两个输入模式各对应一个方案；新建会话时沿用最近选择的模式
+  private static let schemaForMode = [
+    SquirrelInstaller.InputMode.wubi.rawValue: "wubi86_pinyin",
+    SquirrelInstaller.InputMode.pinyin.rawValue: "senk_pinyin"
+  ]
+  private static var modeSchema: String?
 
   // swiftlint:disable:next cyclomatic_complexity
   override func handle(_ event: NSEvent!, client sender: Any!) -> Bool {
@@ -191,6 +198,20 @@ final class SquirrelInputController: IMKInputController {
     createSession()
   }
 
+  // 用户在系统输入法菜单里切换「SENK五笔」「SENK拼音」时调用
+  override func setValue(_ value: Any!, forTag tag: Int, client sender: Any!) {
+    guard tag == kTextServiceInputModePropertyTag, let mode = value as? String, let schema = Self.schemaForMode[mode] else {
+      super.setValue(value, forTag: tag, client: sender)
+      return
+    }
+    Self.modeSchema = schema
+    if session == 0 || !rimeAPI.find_session(session) {
+      createSession()
+    } else {
+      _ = rimeAPI.select_schema(session, schema)
+    }
+  }
+
   override func deactivateServer(_ sender: Any!) {
     // print("[DEBUG] deactivateServer: \(sender ?? "nil")")
     hidePalettes()
@@ -344,6 +365,9 @@ private extension SquirrelInputController {
     schemaId = ""
 
     if session != 0 {
+      if let schema = Self.modeSchema {
+        _ = rimeAPI.select_schema(session, schema)
+      }
       updateAppOptions()
     }
   }

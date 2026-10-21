@@ -18,7 +18,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   var config: SquirrelConfig?
   var panel: SquirrelPanel?
   var enableNotifications = false
-  let updateController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
+  let updateController = SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: nil, userDriverDelegate: nil)
   var supportsGentleScheduledUpdateReminders: Bool {
     true
   }
@@ -84,13 +84,9 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     NSWorkspace.shared.open(SquirrelApp.userDir)
   }
 
+  // SENK五笔：不检查更新，更新只走本项目的安装脚本，避免被换回原版鼠须管
   func checkForUpdates() {
-    if updateController.updater.canCheckForUpdates {
-      print("Checking for updates")
-      updateController.updater.checkForUpdates()
-    } else {
-      print("Cannot check for updates")
-    }
+    print("Update check disabled")
   }
 
   func openWiki() {
@@ -138,7 +134,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     squirrelTraits.setCString("Squirrel", to: \.distribution_code_name)
     squirrelTraits.setCString("鼠鬚管", to: \.distribution_name)
     squirrelTraits.setCString(Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String, to: \.distribution_version)
-    squirrelTraits.setCString("rime.squirrel", to: \.app_name)
+    squirrelTraits.setCString("rime.senk", to: \.app_name)
     rimeAPI.setup(&squirrelTraits)
   }
 
@@ -223,8 +219,8 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     center.addObserver(forName: NSWorkspace.willPowerOffNotification, object: nil, queue: nil, using: workspaceWillPowerOff)
 
     let notifCenter = DistributedNotificationCenter.default()
-    notifCenter.addObserver(forName: .init("SquirrelReloadNotification"), object: nil, queue: nil, using: rimeNeedsReload)
-    notifCenter.addObserver(forName: .init("SquirrelSyncNotification"), object: nil, queue: nil, using: rimeNeedsSync)
+    notifCenter.addObserver(forName: .init("SenkWubiReloadNotification"), object: nil, queue: nil, using: rimeNeedsReload)
+    notifCenter.addObserver(forName: .init("SenkWubiSyncNotification"), object: nil, queue: nil, using: rimeNeedsSync)
   }
 
   func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
