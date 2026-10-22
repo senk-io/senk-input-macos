@@ -203,6 +203,7 @@ final class SenkInputController: IMKInputController {
       Self.modeSchema = schema
     }
     applyModeSchema()
+    syncAsciiPunct()
   }
 
   override init!(server: IMKServer!, delegate: Any!, client: Any!) {
@@ -280,8 +281,15 @@ final class SenkInputController: IMKInputController {
     setting.target = self
     let wiki = NSMenuItem(title: NSLocalizedString("Rime Wiki...", comment: "Menu item"), action: #selector(openWiki), keyEquivalent: "")
     wiki.target = self
+    // 快捷键 Control+. 由方案的 key_binder 处理，这里只是标出来
+    let halfWidthPunct = NSMenuItem(title: NSLocalizedString("Half-width punctuation", comment: "Menu item"), action: #selector(toggleHalfWidthPunct), keyEquivalent: ".")
+    halfWidthPunct.keyEquivalentModifierMask = [.control]
+    halfWidthPunct.target = self
+    halfWidthPunct.state = NSApp.senkAppDelegate.asciiPunct ? .on : .off
 
     let menu = NSMenu()
+    menu.addItem(halfWidthPunct)
+    menu.addItem(.separator())
     menu.addItem(deploy)
     menu.addItem(sync)
     menu.addItem(logDir)
@@ -309,6 +317,15 @@ final class SenkInputController: IMKInputController {
 
   @objc func openWiki() {
     NSApp.senkAppDelegate.openWiki()
+  }
+
+  @objc func toggleHalfWidthPunct() {
+    let value = !NSApp.senkAppDelegate.asciiPunct
+    NSApp.senkAppDelegate.asciiPunct = value
+    // 当前会话立即生效，并弹出「全角标点 / 半角标点」提示
+    if session != 0 && rimeAPI.find_session(session) {
+      rimeAPI.set_option(session, SenkApplicationDelegate.asciiPunctOption, value)
+    }
   }
 
   deinit {
@@ -384,6 +401,18 @@ private extension SenkInputController {
         _ = rimeAPI.select_schema(session, schema)
       }
       updateAppOptions()
+    }
+  }
+
+  // 全角/半角标点在所有应用间共用：在别的应用里改过时，切换到这里补上
+  func syncAsciiPunct() {
+    guard session != 0 && rimeAPI.find_session(session) else { return }
+    let delegate = NSApp.senkAppDelegate
+    let saved = delegate.asciiPunct
+    if rimeAPI.get_option(session, SenkApplicationDelegate.asciiPunctOption) != saved {
+      delegate.syncingOptions = true
+      rimeAPI.set_option(session, SenkApplicationDelegate.asciiPunctOption, saved)
+      delegate.syncingOptions = false
     }
   }
 
