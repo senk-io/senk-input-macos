@@ -18,6 +18,98 @@
         }
       }
     },
+    "Microphone could not be started" : {
+      "comment" : "Voice input status",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Microphone Could Not Be Started"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "麦克风无法启动"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "麥克風無法啟動"
+          }
+        }
+      }
+    },
+    "On-device Chinese speech recognition is not available" : {
+      "comment" : "Voice input status",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On-device Chinese Speech Recognition Is Not Available"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本机没有中文离线语音识别：系统设置 → 键盘 → 听写，添加普通话"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本機沒有中文離線語音辨識：系統設定 → 鍵盤 → 聽寫，加入國語"
+          }
+        }
+      }
+    },
+    "Voice input (hold right Option)" : {
+      "comment" : "Menu item",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voice Input (Hold Right Option)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "语音输入（按住右 Option 说话）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "語音輸入（按住右 Option 說話）"
+          }
+        }
+      }
+    },
+    "Voice input needs microphone and speech recognition permission" : {
+      "comment" : "Voice input status",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voice Input Needs Microphone and Speech Recognition Permission"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "语音输入需要麦克风和语音识别权限：系统设置 → 隐私与安全性"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "語音輸入需要麥克風和語音辨識權限：系統設定 → 隱私權與安全性"
+          }
+        }
+      }
+    },
     "deploy_failure" : {
       "localizations" : {
         "en" : {

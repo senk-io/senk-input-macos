@@ -35,6 +35,12 @@ final class SenkInputController: IMKInputController {
     SenkInstaller.InputMode.pinyin.rawValue: "senk_pinyin"
   ]
   private static var modeSchema: String?
+  // SENK 语音输入：没在输入编码时按住右 Option 超过 voiceHoldDelay 开始听，松开上屏，Esc 取消。
+  // 按住期间按了别的键（Option 组合键）就不算
+  private static let voiceHoldDelay: TimeInterval = 0.3
+  private var voiceHoldTimer: Timer?
+  private var voiceListening = false  // 还按着右 Option：按键都交给语音输入
+  private var voiceRunning = false    // 从开始听到上屏或出错
 
   // swiftlint:disable:next cyclomatic_complexity
   override func handle(_ event: NSEvent!, client sender: Any!) -> Bool {
@@ -59,6 +65,10 @@ final class SenkInputController: IMKInputController {
     if let app = client?.bundleIdentifier(), currentApp != app {
       currentApp = app
       updateAppOptions()
+    }
+
+    if voiceListening {
+      return handleVoiceEvent(event)
     }
 
     switch event.type {
@@ -97,8 +107,10 @@ final class SenkInputController: IMKInputController {
 
       lastModifiers = modifiers
       rimeUpdate()
+      updateVoiceHold(keyCode: event.keyCode, modifiers: modifiers)
 
     case .keyDown:
+      cancelVoiceHold()
       // ignore Command+X hotkeys.
       if modifiers.contains(.command) {
         break
@@ -237,6 +249,7 @@ final class SenkInputController: IMKInputController {
 
   override func deactivateServer(_ sender: Any!) {
     // print("[DEBUG] deactivateServer: \(sender ?? "nil")")
+    cancelVoice()
     hidePalettes()
     commitComposition(sender)
     client = nil
@@ -286,9 +299,13 @@ final class SenkInputController: IMKInputController {
     halfWidthPunct.keyEquivalentModifierMask = [.control]
     halfWidthPunct.target = self
     halfWidthPunct.state = NSApp.senkAppDelegate.asciiPunct ? .on : .off
+    let voiceInput = NSMenuItem(title: NSLocalizedString("Voice input (hold right Option)", comment: "Menu item"), action: #selector(toggleVoiceInput), keyEquivalent: "")
+    voiceInput.target = self
+    voiceInput.state = NSApp.senkAppDelegate.voiceInputEnabled ? .on : .off
 
     let menu = NSMenu()
     menu.addItem(halfWidthPunct)
+    menu.addItem(voiceInput)
     menu.addItem(.separator())
     menu.addItem(deploy)
     menu.addItem(sync)
@@ -328,8 +345,110 @@ final class SenkInputController: IMKInputController {
     }
   }
 
+  @objc func toggleVoiceInput() {
+    NSApp.senkAppDelegate.voiceInputEnabled.toggle()
+    if !NSApp.senkAppDelegate.voiceInputEnabled {
+      cancelVoice()
+    }
+  }
+
   deinit {
+    cancelVoice()
     destroySession()
+  }
+}
+
+// MARK: - 语音输入
+
+private extension SenkInputController {
+  func updateVoiceHold(keyCode: UInt16, modifiers: NSEvent.ModifierFlags) {
+    cancelVoiceHold()
+    guard keyCode == UInt16(kVK_RightOption),
+          modifiers.intersection([.shift, .control, .option, .command]) == [.option],
+          NSApp.senkAppDelegate.voiceInputEnabled, isRimeIdle() else { return }
+    voiceHoldTimer = Timer.scheduledTimer(withTimeInterval: Self.voiceHoldDelay, repeats: false) { [weak self] _ in
+      self?.startVoice()
+    }
+  }
+
+  func cancelVoiceHold() {
+    voiceHoldTimer?.invalidate()
+    voiceHoldTimer = nil
+  }
+
+  func isRimeIdle() -> Bool {
+    guard session != 0, let input = rimeAPI.get_input(session) else { return true }
+    return input.pointee == 0
+  }
+
+  func startVoice() {
+    voiceHoldTimer = nil
+    guard client != nil, !voiceRunning, isRimeIdle() else { return }
+    voiceListening = true
+    voiceRunning = true
+    showVoice("")
+    NSApp.senkAppDelegate.voice.start(
+      onUpdate: { [weak self] text in self?.showVoice(text) },
+      onFinish: { [weak self] text in self?.endVoice(text) },
+      onFailure: { [weak self] failure in self?.failVoice(failure) })
+  }
+
+  // 听的时候：松开右 Option 结束并上屏，Esc 取消，其它按键不处理也不交给应用
+  func handleVoiceEvent(_ event: NSEvent) -> Bool {
+    switch event.type {
+    case .flagsChanged:
+      lastModifiers = event.modifierFlags
+      if event.keyCode == UInt16(kVK_RightOption) && !event.modifierFlags.contains(.option) {
+        voiceListening = false
+        NSApp.senkAppDelegate.voice.finish()
+      }
+    case .keyDown:
+      if event.keyCode == UInt16(kVK_Escape) {
+        cancelVoice()
+      }
+    default:
+      break
+    }
+    return true
+  }
+
+  func showVoice(_ text: String) {
+    guard voiceRunning else { return }
+    let line = "🎙 " + text
+    let end = line.utf16.count
+    showPanel(preedit: line, selRange: NSRange(location: end, length: 0), caretPos: end,
+              candidates: [], comments: [], labels: [], highlighted: 0, page: 0, lastPage: true)
+  }
+
+  func endVoice(_ text: String) {
+    voiceListening = false
+    voiceRunning = false
+    hidePalettes()
+    if !text.isEmpty {
+      commit(string: text)
+    }
+  }
+
+  func failVoice(_ failure: SenkVoiceInput.Failure) {
+    voiceListening = false
+    voiceRunning = false
+    let message = switch failure {
+    case .denied: NSLocalizedString("Voice input needs microphone and speech recognition permission", comment: "Voice input status")
+    case .unavailable: NSLocalizedString("On-device Chinese speech recognition is not available", comment: "Voice input status")
+    case .audio: NSLocalizedString("Microphone could not be started", comment: "Voice input status")
+    }
+    NSApp.senkAppDelegate.panel?.updateStatus(long: message, short: message)
+    showPanel(preedit: "", selRange: NSRange(location: 0, length: 0), caretPos: 0,
+              candidates: [], comments: [], labels: [], highlighted: 0, page: 0, lastPage: true)
+  }
+
+  func cancelVoice() {
+    cancelVoiceHold()
+    guard voiceRunning else { return }
+    voiceListening = false
+    voiceRunning = false
+    NSApp.senkAppDelegate.voice.cancel()
+    hidePalettes()
   }
 }
 

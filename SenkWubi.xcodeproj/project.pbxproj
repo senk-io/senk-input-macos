@@ -81,6 +81,7 @@
 		B38E9B952BEAFEFD0036ABEF /* SenkInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E9B942BEAFEFD0036ABEF /* SenkInputController.swift */; };
 		B39771232BECEA150093A49B /* MacOSKeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771222BECEA150093A49B /* MacOSKeyCodes.swift */; };
 		B39771252BED899F0093A49B /* SenkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771242BED899F0093A49B /* SenkConfig.swift */; };
+		5E4E0C000000000000000010 /* SenkVoiceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E0C000000000000000011 /* SenkVoiceInput.swift */; };
 		B39771272BED9B250093A49B /* SenkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771262BED9B250093A49B /* SenkTheme.swift */; };
 		B39771292BEDAF4A0093A49B /* SenkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771282BEDAF4A0093A49B /* SenkView.swift */; };
 		B397712B2BEE4C160093A49B /* SenkPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B397712A2BEE4C160093A49B /* SenkPanel.swift */; };
@@ -295,6 +296,7 @@
 		B38E9B942BEAFEFD0036ABEF /* SenkInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkInputController.swift; path = sources/SenkInputController.swift; sourceTree = "<group>"; };
 		B39771222BECEA150093A49B /* MacOSKeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacOSKeyCodes.swift; path = sources/MacOSKeyCodes.swift; sourceTree = "<group>"; };
 		B39771242BED899F0093A49B /* SenkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkConfig.swift; path = sources/SenkConfig.swift; sourceTree = "<group>"; };
+		5E4E0C000000000000000011 /* SenkVoiceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkVoiceInput.swift; path = sources/SenkVoiceInput.swift; sourceTree = "<group>"; };
 		B39771262BED9B250093A49B /* SenkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkTheme.swift; path = sources/SenkTheme.swift; sourceTree = "<group>"; };
 		B39771282BEDAF4A0093A49B /* SenkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkView.swift; path = sources/SenkView.swift; sourceTree = "<group>"; };
 		B397712A2BEE4C160093A49B /* SenkPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkPanel.swift; path = sources/SenkPanel.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				B397712A2BEE4C160093A49B /* SenkPanel.swift */,
 				B39771282BEDAF4A0093A49B /* SenkView.swift */,
 				B39771242BED899F0093A49B /* SenkConfig.swift */,
+				5E4E0C000000000000000011 /* SenkVoiceInput.swift */,
 				B35D2FE72BF00839009D156B /* BridgingFunctions.swift */,
 				B38E9B8F2BE9AE1E0036ABEF /* Senk-Bridging-Header.h */,
 			);
@@ -595,6 +598,7 @@
 				B39771292BEDAF4A0093A49B /* SenkView.swift in Sources */,
 				B38E9B952BEAFEFD0036ABEF /* SenkInputController.swift in Sources */,
 				B39771252BED899F0093A49B /* SenkConfig.swift in Sources */,
+				5E4E0C000000000000000010 /* SenkVoiceInput.swift in Sources */,
 				B397712F2BEECBED0093A49B /* Main.swift in Sources */,
 				B397712D2BEEB39D0093A49B /* InputSource.swift in Sources */,
 				B397712B2BEE4C160093A49B /* SenkPanel.swift in Sources */,
@@ -618,7 +622,7 @@
 				CODE_SIGN_ENTITLEMENTS = resources/Senk.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.1.0;
 				DEAD_CODE_STRIPPING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -674,7 +678,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = resources/Senk.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.1.0;
 				DEAD_CODE_STRIPPING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
