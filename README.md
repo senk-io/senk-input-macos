@@ -1,110 +1,60 @@
-    鼠鬚管
-    爲物雖微情不淺
-    新詩醉墨時一揮
-    別後寄我無辭遠
+# SENK五笔（macOS 输入法程序）
 
-    　　　——歐陽修
+macOS 上的 SENK 输入法程序。系统输入法菜单里有两个模式：
 
-今由　[中州韻輸入法引擎／Rime Input Method Engine](https://rime.im)
-及其他開源技術強力驅動
+| 模式 | 方案 | 说明 |
+|---|---|---|
+| SENK五笔 | `wubi86_pinyin` | SENK五笔混拼输入法86版 |
+| SENK拼音 | `senk_pinyin` | SENK拼音输入法 |
 
-【鼠鬚管】輸入法
-===
-[![Download](https://img.shields.io/github/v/release/rime/squirrel)](https://github.com/rime/squirrel/releases/latest)
-[![Build Status](https://github.com/rime/squirrel/actions/workflows/commit-ci.yml/badge.svg)](https://github.com/rime/squirrel/actions/workflows)
-[![GitHub Tag](https://img.shields.io/github/tag/rime/squirrel.svg)](https://github.com/rime/squirrel)
+菜单栏显示的模式就是正在用的方案；方案只随系统输入法菜单切换，Control+\`、F4 不切换方案。
 
-式恕堂 版權所無
+方案、词库和安装脚本在 [senk-io/wubi86-pinyin](https://github.com/senk-io/wubi86-pinyin)。一般用那里的安装脚本安装，不需要自己编译。
 
-授權條款：[GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html)
+- 输入引擎：librime 1.16.0，带 lua、octagram、predict 插件
+- 用户目录：`~/Library/Rime`
+- 日志：`$TMPDIR/rime.senk/`
+- 不自动检查更新，也不联网
 
-項目主頁：[rime.im](https://rime.im)
+## 编译
 
-您可能還需要 Rime 用於其他操作系統的發行版：
+需要 Xcode（命令行工具）。
 
-  * 【中州韻】（ibus-rime、fcitx-rime）用於 Linux
-  * 【小狼毫】用於 Windows
+```sh
+git clone --recursive https://github.com/senk-io/senk-input-macos.git
+cd senk-input-macos
+./action-build.sh                 # 只编译本机架构；两种架构都要时：ARCHS='arm64 x86_64' ./action-build.sh
+```
 
-安裝輸入法
----
+产物是 `build/Build/Products/Release/SenkWubi.app`。
 
-本品適用於 macOS 13.0+
+## 安装与卸载（不需要 sudo）
 
-初次安裝，如果在部份應用程序中打不出字，請註銷並重新登錄。
+```sh
+app="$HOME/Library/Input Methods/SenkWubi.app"
+ditto build/Build/Products/Release/SenkWubi.app "$app"
+"$app/Contents/MacOS/SenkWubi" --register-input-source
+"$app/Contents/MacOS/SenkWubi" --enable-input-source io.senk.inputmethod.SenkWubi.Wubi io.senk.inputmethod.SenkWubi.Pinyin
+"$app/Contents/MacOS/SenkWubi" --select-input-source io.senk.inputmethod.SenkWubi.Wubi
+```
 
-使用輸入法
----
+卸载：
 
-選取輸入法指示器菜單裏的【ㄓ】字樣圖標，開始用鼠鬚管寫字。
-通過快捷鍵 `` Ctrl+` `` 或 `F4` 呼出方案選單、切換輸入方式。
+```sh
+app="$HOME/Library/Input Methods/SenkWubi.app"
+"$app/Contents/MacOS/SenkWubi" --disable-input-source
+"$app/Contents/MacOS/SenkWubi" --quit
+mv "$app" ~/.Trash/
+```
 
-定製輸入法
----
+`~/Library/Rime` 里的词库和配置不会被删除。
 
-定製方法，請參考線上 [幫助文檔](https://rime.im/docs/)。
+## 发布
 
-使用系統輸入法菜單：
+推送 `v<版本号>` 标签（与 `CURRENT_PROJECT_VERSION` 一致）后，GitHub Actions 编译 arm64 + x86_64 版本，发布 `SenkWubi-<版本号>.zip` 和 `SHA256SUMS`。程序为本地签名，未经 Apple 公证。
 
-  * 選中「在線文檔」可打開以上網址
-  * 編輯用戶設定後，選擇「重新部署」以令修改生效
+## 许可证
 
-安裝輸入方案
----
+GPL-3.0，见 [LICENSE.txt](LICENSE.txt)。
 
-使用 [/plum/](https://github.com/rime/plum) 配置管理器獲取更多輸入方案。
-
-致謝
----
-
-輸入方案設計：
-
-  * 【朙月拼音】系列
-
-    感謝 CC-CEDICT、Android 拼音、新酷音、opencc 等開源項目
-
-程序設計：
-
-  * 佛振
-  * Linghua Zhang
-  * Chongyu Zhu
-  * 雪齋
-  * faberii
-  * Chun-wei Kuo
-  * Junlu Cheng
-  * Jak Wings
-  * xiehuc
-
-美術：
-
-  * 圖標設計 佛振、梁海、雨過之後
-  * 配色方案 Aben、Chongyu Zhu、skoj、Superoutman、佛振、梁海
-
-本品引用了以下開源軟件：
-
-  * Boost C++ Libraries  (Boost Software License)
-  * capnproto (MIT License)
-  * darts-clone  (New BSD License)
-  * google-glog  (New BSD License)
-  * Google Test  (New BSD License)
-  * LevelDB  (New BSD License)
-  * librime  (New BSD License)
-  * OpenCC / 開放中文轉換  (Apache License 2.0)
-  * plum / 東風破 (GNU Lesser General Public License 3.0)
-  * Sparkle  (MIT License)
-  * UTF8-CPP  (Boost Software License)
-  * yaml-cpp  (MIT License)
-
-感謝王公子捐贈開發用機。
-
-問題與反饋
----
-
-發現程序有 BUG，或建議，或感想，請反饋到 [Rime 代碼之家討論區](https://github.com/rime/home/discussions)
-
-聯繫方式
----
-
-技術交流，歡迎光臨 [Rime 代碼之家](https://github.com/rime/home)，
-或致信 Rime 開發者 <rimeime@gmail.com>。
-
-謝謝
+本程序修改自 Rime 输入法引擎的 macOS 前端 <https://github.com/rime/squirrel>（1.1.2 版，GPL-3.0），按 GPL-3.0 第 5 条注明来源和修改。主要修改：程序名称与标识、两个输入模式各对应一个方案、去掉自动更新组件、注册路径随程序所在位置。源文件中原作者的署名保留。

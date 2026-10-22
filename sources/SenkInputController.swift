@@ -307,10 +307,6 @@ final class SenkInputController: IMKInputController {
     NSApp.senkAppDelegate.openRimeFolder()
   }
 
-  @objc func checkForUpdates() {
-    NSApp.senkAppDelegate.checkForUpdates()
-  }
-
   @objc func openWiki() {
     NSApp.senkAppDelegate.openWiki()
   }

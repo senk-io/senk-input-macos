@@ -1,19 +1,6 @@
 #!/usr/bin/env bash
-
+# 下载 librime 预编译包和 Rime 数据，再编译 SenkWubi.app
 set -e
 
-target="${1:-release}"
-
-# export BUILD_UNIVERSAL=1
-
-# preinstall
 ./action-install.sh
-
-# build dependencies
-# make deps
-
-# build Squirrel
-make "${target}"
-
-echo 'Installer package:'
-find package -type f -name '*.pkg' -or -name '*.zip'
+make "${1:-release}"

@@ -1,0 +1,59 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: 编译（arm64 + x86_64）
+        env:
+          ARCHS: 'arm64 x86_64'
+        run: ./action-build.sh
+
+      - name: 检查程序包
+        run: |
+          app=build/Build/Products/Release/SenkWubi.app
+          codesign --verify --deep --strict "$app"
+          test "$(plutil -extract CFBundleIdentifier raw "$app/Contents/Info.plist")" = io.senk.inputmethod.SenkWubi
+          test "$(plutil -extract CFBundleExecutable raw "$app/Contents/Info.plist")" = SenkWubi
+          lipo -archs "$app/Contents/MacOS/SenkWubi" | grep -q arm64
+          lipo -archs "$app/Contents/MacOS/SenkWubi" | grep -q x86_64
+          for p in lua octagram predict; do test -f "$app/Contents/Frameworks/rime-plugins/librime-$p.dylib"; done
+          if find "$app" -iname '*squirrel*' -o -iname '*sparkle*' | grep . \
+            || grep -rIil 'squirrel\|sparkle\|鼠须管\|鼠鬚管' "$app" \
+            || find "$app/Contents/MacOS" "$app/Contents/Frameworks" -type f -exec strings {} + | grep -iE 'squirrel|sparkle|鼠须管|鼠鬚管'; then
+            echo "程序包里残留上游名称"; exit 1
+          fi
+
+      - name: 打包
+        run: |
+          ver=$(plutil -extract CFBundleVersion raw build/Build/Products/Release/SenkWubi.app/Contents/Info.plist)
+          mkdir -p dist
+          ditto -c -k --keepParent build/Build/Products/Release/SenkWubi.app "dist/SenkWubi-${ver}.zip"
+          (cd dist && shasum -a 256 SenkWubi-*.zip > SHA256SUMS && cat SHA256SUMS)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SenkWubi
+          path: dist/
+
+      - name: 发布
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "v$(plutil -extract CFBundleVersion raw build/Build/Products/Release/SenkWubi.app/Contents/Info.plist)" = "$GITHUB_REF_NAME"
+          gh release create "$GITHUB_REF_NAME" dist/* --title "SENK五笔 $GITHUB_REF_NAME" \
+            --notes "安装方法见 https://github.com/senk-io/wubi86-pinyin 。SHA256SUMS 列出了程序包的校验值。"

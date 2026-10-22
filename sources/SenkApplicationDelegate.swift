@@ -6,51 +6,16 @@
 //
 
 import UserNotifications
-import Sparkle
 import AppKit
 
-final class SenkApplicationDelegate: NSObject, NSApplicationDelegate, SPUStandardUserDriverDelegate, UNUserNotificationCenterDelegate {
+final class SenkApplicationDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
   static let rimeWikiURL = URL(string: "https://github.com/rime/home/wiki")!
-  static let updateNotificationIdentifier = "SenkUpdateNotification"
   static let notificationIdentifier = "SenkNotification"
 
   let rimeAPI: RimeApi_stdbool = rime_get_api_stdbool().pointee
   var config: SenkConfig?
   var panel: SenkPanel?
   var enableNotifications = false
-  let updateController = SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: nil, userDriverDelegate: nil)
-  var supportsGentleScheduledUpdateReminders: Bool {
-    true
-  }
-
-  func standardUserDriverWillHandleShowingUpdate(_ handleShowingUpdate: Bool, forUpdate update: SUAppcastItem, state: SPUUserUpdateState) {
-    NSApp.setActivationPolicy(.regular)
-    if !state.userInitiated {
-      NSApp.dockTile.badgeLabel = "1"
-      let content = UNMutableNotificationContent()
-      content.title = NSLocalizedString("A new update is available", comment: "Update")
-      content.body = NSLocalizedString("Version [version] is now available", comment: "Update").replacingOccurrences(of: "[version]", with: update.displayVersionString)
-      let request = UNNotificationRequest(identifier: Self.updateNotificationIdentifier, content: content, trigger: nil)
-      UNUserNotificationCenter.current().add(request)
-    }
-  }
-
-  func standardUserDriverDidReceiveUserAttention(forUpdate update: SUAppcastItem) {
-    NSApp.dockTile.badgeLabel = ""
-    UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [Self.updateNotificationIdentifier])
-  }
-
-  func standardUserDriverWillFinishUpdateSession() {
-    NSApp.setActivationPolicy(.accessory)
-  }
-
-  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    if response.notification.request.identifier == Self.updateNotificationIdentifier && response.actionIdentifier == UNNotificationDefaultActionIdentifier {
-      updateController.updater.checkForUpdates()
-    }
-
-    completionHandler()
-  }
 
   func applicationWillFinishLaunching(_ notification: Notification) {
     panel = SenkPanel(position: .zero)
@@ -82,11 +47,6 @@ final class SenkApplicationDelegate: NSObject, NSApplicationDelegate, SPUStandar
 
   func openRimeFolder() {
     NSWorkspace.shared.open(SenkApp.userDir)
-  }
-
-  // SENK五笔：不检查更新，更新只走本项目的安装脚本，避免被换回原版鼠须管
-  func checkForUpdates() {
-    print("Update check disabled")
   }
 
   func openWiki() {
