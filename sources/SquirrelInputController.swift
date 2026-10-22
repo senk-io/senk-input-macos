@@ -105,6 +105,13 @@ final class SquirrelInputController: IMKInputController {
       }
 
       let keyCode = event.keyCode
+      // SENK：方案只由系统输入法菜单里的模式决定，否则菜单栏显示的模式和实际方案会对不上。
+      // 不把方案选单的快捷键（default.yaml switcher/hotkeys：Control+`、Control+Shift+`、F4）交给 Rime，原样留给当前程序
+      let hotkeyModifiers = modifiers.intersection([.shift, .control, .option])
+      if (keyCode == UInt16(kVK_ANSI_Grave) && (hotkeyModifiers == [.control] || hotkeyModifiers == [.control, .shift]))
+          || (keyCode == UInt16(kVK_F4) && hotkeyModifiers.isEmpty) {
+        break
+      }
       var keyChars = event.charactersIgnoringModifiers
       let capitalModifiers = modifiers.isSubset(of: [.shift, .capsLock])
       if let code = keyChars?.first,
@@ -273,8 +280,6 @@ final class SquirrelInputController: IMKInputController {
     setting.target = self
     let wiki = NSMenuItem(title: NSLocalizedString("Rime Wiki...", comment: "Menu item"), action: #selector(openWiki), keyEquivalent: "")
     wiki.target = self
-    let update = NSMenuItem(title: NSLocalizedString("Check for updates...", comment: "Menu item"), action: #selector(checkForUpdates), keyEquivalent: "")
-    update.target = self
 
     let menu = NSMenu()
     menu.addItem(deploy)
@@ -282,7 +287,6 @@ final class SquirrelInputController: IMKInputController {
     menu.addItem(logDir)
     menu.addItem(setting)
     menu.addItem(wiki)
-    menu.addItem(update)
 
     return menu
   }
