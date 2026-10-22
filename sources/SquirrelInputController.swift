@@ -189,6 +189,13 @@ final class SquirrelInputController: IMKInputController {
       client?.overrideKeyboard(withKeyboardNamed: keyboardLayout)
     }
     preedit = ""
+    // 切回本输入法或切换程序时，按系统当前选中的模式确定方案，不只依赖 setValue 是否被调用
+    if let source = TISCopyCurrentKeyboardInputSource()?.takeRetainedValue(),
+       let id = TISGetInputSourceProperty(source, kTISPropertyInputSourceID),
+       let schema = Self.schemaForMode[Unmanaged<CFString>.fromOpaque(id).takeUnretainedValue() as String] {
+      Self.modeSchema = schema
+    }
+    applyModeSchema()
   }
 
   override init!(server: IMKServer!, delegate: Any!, client: Any!) {
@@ -208,8 +215,16 @@ final class SquirrelInputController: IMKInputController {
     if session == 0 || !rimeAPI.find_session(session) {
       createSession()
     } else {
-      _ = rimeAPI.select_schema(session, schema)
+      applyModeSchema()
     }
+  }
+
+  // 已经是该方案时不重复切换：select_schema 会清空正在输入的内容并重置方案开关
+  private func applyModeSchema() {
+    guard let schema = Self.modeSchema, session != 0, rimeAPI.find_session(session) else { return }
+    var current = [CChar](repeating: 0, count: 100)
+    if rimeAPI.get_current_schema(session, &current, current.count), String(cString: current) == schema { return }
+    _ = rimeAPI.select_schema(session, schema)
   }
 
   override func deactivateServer(_ sender: Any!) {
