@@ -31,6 +31,8 @@ jobs:
           lipo -archs "$app/Contents/MacOS/SenkWubi" | grep -q arm64
           lipo -archs "$app/Contents/MacOS/SenkWubi" | grep -q x86_64
           for p in lua octagram predict; do test -f "$app/Contents/Frameworks/rime-plugins/librime-$p.dylib"; done
+          test -s "$app/Contents/Resources/LICENSE.txt"
+          test -s "$app/Contents/Resources/THIRD-PARTY-NOTICES.txt"
           if find "$app" -iname '*squirrel*' -o -iname '*sparkle*' | grep . \
             || grep -rIil 'squirrel\|sparkle\|鼠须管\|鼠鬚管' "$app" \
             || find "$app/Contents/MacOS" "$app/Contents/Frameworks" -type f -exec strings {} + | grep -iE 'squirrel|sparkle|鼠须管|鼠鬚管'; then
