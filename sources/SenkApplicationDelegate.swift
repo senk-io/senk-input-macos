@@ -16,6 +16,27 @@ final class SenkApplicationDelegate: NSObject, NSApplicationDelegate, UNUserNoti
   var config: SenkConfig?
   var panel: SenkPanel?
   var enableNotifications = false
+  // 程序自己同步选项（见 SenkInputController.syncAsciiPunct）时为 true：不弹状态提示，也不重复保存
+  var syncingOptions = false
+
+  // 全角/半角标点：所有应用共用一个设置，存在 Rime 用户配置的 var/option/ascii_punct。
+  // 新建会话时 Rime 按 default.yaml 的 switcher/save_options 自动恢复；已有会话在切换到该应用时补上
+  static let asciiPunctOption = "ascii_punct"
+  var asciiPunct: Bool {
+    get {
+      var config = RimeConfig()
+      guard rimeAPI.user_config_open("user", &config) else { return false }
+      defer { _ = rimeAPI.config_close(&config) }
+      var value = false
+      return rimeAPI.config_get_bool(&config, "var/option/\(Self.asciiPunctOption)", &value) && value
+    }
+    set {
+      var config = RimeConfig()
+      guard rimeAPI.user_config_open("user", &config) else { return }
+      _ = rimeAPI.config_set_bool(&config, "var/option/\(Self.asciiPunctOption)", newValue)
+      _ = rimeAPI.config_close(&config)
+    }
+  }
 
   func applicationWillFinishLaunching(_ notification: Notification) {
     panel = SenkPanel(position: .zero)
@@ -208,6 +229,14 @@ private func notificationHandler(contextObject: UnsafeMutableRawPointer?, sessio
       break
     }
     return
+  }
+  // 任何会话里切换全角/半角标点（Control+. 或菜单），都保存为所有应用共用的设置
+  if messageType == "option", let value = messageValue,
+     value == SenkApplicationDelegate.asciiPunctOption || value == "!" + SenkApplicationDelegate.asciiPunctOption {
+    if delegate.syncingOptions {
+      return
+    }
+    delegate.asciiPunct = value.first != "!"
   }
   // off
   if !delegate.enableNotifications {
