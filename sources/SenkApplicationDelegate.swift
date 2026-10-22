@@ -38,6 +38,14 @@ final class SenkApplicationDelegate: NSObject, NSApplicationDelegate, UNUserNoti
     }
   }
 
+  // 语音输入（按住右 Option 说话）：所有应用共用一个识别器；开关存在程序偏好设置里，默认开
+  let voice = SenkVoiceInput()
+  static let voiceInputKey = "voiceInput"
+  var voiceInputEnabled: Bool {
+    get { UserDefaults.standard.object(forKey: Self.voiceInputKey) as? Bool ?? true }
+    set { UserDefaults.standard.set(newValue, forKey: Self.voiceInputKey) }
+  }
+
   func applicationWillFinishLaunching(_ notification: Notification) {
     panel = SenkPanel(position: .zero)
     addObservers()

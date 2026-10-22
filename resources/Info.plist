@@ -99,8 +99,12 @@
 	<false/>
 	<key>LSUIElement</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>SENK 的语音输入需要使用麦克风：按住右 Option 说话，松开后把识别出的文字输入到当前位置。</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>SENK 的语音输入只在本机离线识别你说的话，不上传，不联网。</string>
 	<key>TICapsLockLanguageSwitchCapable</key>
 	<true/>
 </dict>
