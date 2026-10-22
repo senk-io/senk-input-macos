@@ -32,6 +32,7 @@
 		448363DD25BDBBED0022C7BA /* pinyin.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 448363D925BDBBBF0022C7BA /* pinyin.yaml */; };
 		448363DE25BDBBED0022C7BA /* zhuyin.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 448363DA25BDBBBF0022C7BA /* zhuyin.yaml */; };
 		44986A95184B421700B3278D /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 44986A93184B421700B3278D /* LICENSE.txt */; };
+		5E4E0C000000000000000001 /* THIRD-PARTY-NOTICES.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E0C000000000000000002 /* THIRD-PARTY-NOTICES.txt */; };
 		44AEBC7521F569FD00344375 /* key_bindings.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 44AEBC7221F569CF00344375 /* key_bindings.yaml */; };
 		44AEBC7621F569FD00344375 /* punctuation.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 44AEBC7121F569CF00344375 /* punctuation.yaml */; };
 		44CD640C15E2646B0021234E /* librime.1.dylib in Copy 3rd-party Frameworks */ = {isa = PBXBuildFile; fileRef = 44CD640915E2633D0021234E /* librime.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -239,6 +240,7 @@
 		448363D925BDBBBF0022C7BA /* pinyin.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = pinyin.yaml; path = data/plum/pinyin.yaml; sourceTree = "<group>"; };
 		448363DA25BDBBBF0022C7BA /* zhuyin.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = zhuyin.yaml; path = data/plum/zhuyin.yaml; sourceTree = "<group>"; };
 		44986A93184B421700B3278D /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		5E4E0C000000000000000002 /* THIRD-PARTY-NOTICES.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "THIRD-PARTY-NOTICES.txt"; sourceTree = "<group>"; };
 		44986A94184B421700B3278D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		44AEBC7121F569CF00344375 /* punctuation.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = punctuation.yaml; path = data/plum/punctuation.yaml; sourceTree = "<group>"; };
 		44AEBC7221F569CF00344375 /* key_bindings.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = key_bindings.yaml; path = data/plum/key_bindings.yaml; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 			children = (
 				B3216E5B2BF438F800E292D2 /* rime.pdf */,
 				44986A93184B421700B3278D /* LICENSE.txt */,
+				5E4E0C000000000000000002 /* THIRD-PARTY-NOTICES.txt */,
 				44986A94184B421700B3278D /* README.md */,
 				B39771322BEEE4540093A49B /* Localizable.xcstrings */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -575,6 +578,7 @@
 				B3EF08EA2F17125E00433A45 /* Rime.icon in Resources */,
 				B39771312BEEE4540093A49B /* InfoPlist.xcstrings in Resources */,
 				44986A95184B421700B3278D /* LICENSE.txt in Resources */,
+				5E4E0C000000000000000001 /* THIRD-PARTY-NOTICES.txt in Resources */,
 				B39771332BEEE4540093A49B /* Localizable.xcstrings in Resources */,
 				B3216E5C2BF438F800E292D2 /* rime.pdf in Resources */,
 			);
@@ -614,7 +618,7 @@
 				CODE_SIGN_ENTITLEMENTS = resources/Senk.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEAD_CODE_STRIPPING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -670,7 +674,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = resources/Senk.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEAD_CODE_STRIPPING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

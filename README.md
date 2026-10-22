@@ -57,4 +57,6 @@ mv "$app" ~/.Trash/
 
 GPL-3.0，见 [LICENSE.txt](LICENSE.txt)。
 
-本程序修改自 Rime 输入法引擎的 macOS 前端 <https://github.com/rime/squirrel>（1.1.2 版，GPL-3.0），按 GPL-3.0 第 5 条注明来源和修改。主要修改：程序名称与标识、两个输入模式各对应一个方案、去掉自动更新组件、注册路径随程序所在位置。源文件中原作者的署名保留。
+本程序修改自 Rime 输入法引擎的 macOS 前端 <https://github.com/rime/squirrel>（1.1.2 版，GPL-3.0），按 GPL-3.0 第 5 条注明来源和修改。2026-10-22 起（SENK 1.0.0）的主要修改：程序名称与标识、两个输入模式各对应一个方案、去掉自动更新组件、注册路径随程序所在位置；打包的 Rime 数据 `essay.txt`（LGPL-3.0）删除了「鼠鬚管」一个词条。之后各版本的修改见 git 提交记录。源文件中原作者的署名保留。
+
+程序包里的第三方组件（librime 及其插件和依赖库、OpenCC、Rime 数据等）的版权声明和许可证见 [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt)，程序包内的同名文件在 `Contents/Resources/` 下。
