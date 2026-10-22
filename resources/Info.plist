@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Squirrel</string>
+	<string>SenkWubi</string>
 	<key>CFBundleIconFile</key>
 	<string>RimeIcon.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Squirrel</string>
+	<string>SenkWubi</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
@@ -92,9 +92,9 @@
 	<key>InputMethodConnectionName</key>
 	<string>SenkWubi_Connection</string>
 	<key>InputMethodServerControllerClass</key>
-	<string>Squirrel.SquirrelInputController</string>
+	<string>SenkWubi.SquirrelInputController</string>
 	<key>InputMethodServerDelegateClass</key>
-	<string>Squirrel.SquirrelInputController</string>
+	<string>SenkWubi.SquirrelInputController</string>
 	<key>LSBackgroundOnly</key>
 	<false/>
 	<key>LSUIElement</key>

@@ -17,7 +17,7 @@ final class SquirrelConfig {
 
   func openBaseConfig() -> Bool {
     close()
-    isOpen = rimeAPI.config_open("squirrel", &config)
+    isOpen = rimeAPI.config_open("senk", &config)
     return isOpen
   }
 

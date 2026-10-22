@@ -43,7 +43,7 @@ final class SquirrelInstaller {
   func register() {
     let enabledInputModes = enabledModes()
     if !enabledInputModes.isEmpty {
-      print("User already registered Squirrel method(s): \(enabledInputModes.map { $0.rawValue })")
+      print("User already registered SENK method(s): \(enabledInputModes.map { $0.rawValue })")
       // Already registered.
       return
     }
@@ -54,7 +54,7 @@ final class SquirrelInstaller {
   func enable(modes: [InputMode] = []) {
     let enabledInputModes = enabledModes()
     if !enabledInputModes.isEmpty && modes.isEmpty {
-      print("User already enabled Squirrel method(s): \(enabledInputModes.map { $0.rawValue })")
+      print("User already enabled SENK method(s): \(enabledInputModes.map { $0.rawValue })")
       // keep user's manually enabled input modes.
       return
     }

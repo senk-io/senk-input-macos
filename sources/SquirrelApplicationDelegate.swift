@@ -103,7 +103,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     center.getNotificationSettings { settings in
       if (settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional) && settings.alertSetting == .enabled {
         let content = UNMutableNotificationContent()
-        content.title = NSLocalizedString("Squirrel", comment: "")
+        content.title = "SENK五笔"
         if let msgText = msgText {
           content.subtitle = msgText
         }
@@ -131,8 +131,8 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     squirrelTraits.setCString(Bundle.main.sharedSupportPath!, to: \.shared_data_dir)
     squirrelTraits.setCString(SquirrelApp.userDir.path(), to: \.user_data_dir)
     squirrelTraits.setCString(SquirrelApp.logDir.path(), to: \.log_dir)
-    squirrelTraits.setCString("Squirrel", to: \.distribution_code_name)
-    squirrelTraits.setCString("鼠鬚管", to: \.distribution_name)
+    squirrelTraits.setCString("SenkWubi", to: \.distribution_code_name)
+    squirrelTraits.setCString("SENK五笔", to: \.distribution_name)
     squirrelTraits.setCString(Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String, to: \.distribution_version)
     squirrelTraits.setCString("rime.senk", to: \.app_name)
     rimeAPI.setup(&squirrelTraits)
@@ -145,7 +145,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     if rimeAPI.start_maintenance(fullCheck) {
       // update squirrel config
       // print("[DEBUG] maintenance suceeds")
-      _ = rimeAPI.deploy_config_file("squirrel.yaml", "config_version")
+      _ = rimeAPI.deploy_config_file("senk.yaml", "config_version")
     } else {
       // print("[DEBUG] maintenance fails")
     }
@@ -184,7 +184,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   // prevent freezing the system
   func problematicLaunchDetected() -> Bool {
     var detected = false
-    let logFile = FileManager.default.temporaryDirectory.appendingPathComponent("squirrel_launch.json", conformingTo: .json)
+    let logFile = FileManager.default.temporaryDirectory.appendingPathComponent("senk_launch.json", conformingTo: .json)
     // print("[DEBUG] archive: \(logFile)")
     do {
       let archive = try Data(contentsOf: logFile, options: [.uncached])
@@ -224,7 +224,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   }
 
   func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-    print("Squirrel is quitting.")
+    print("SENK is quitting.")
     rimeAPI.cleanup_all_sessions()
     return .terminateNow
   }
