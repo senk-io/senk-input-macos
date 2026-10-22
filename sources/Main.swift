@@ -15,9 +15,8 @@ struct SquirrelApp {
   } else {
     try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("Rime", isDirectory: true)
   }
-  static let appDir = "/Library/Input Methods/SenkWubi.app".withCString { dir in
-    URL(fileURLWithFileSystemRepresentation: dir, isDirectory: false, relativeTo: nil)
-  }
+  // 按程序实际所在位置注册：装在 /Library/Input Methods 或 ~/Library/Input Methods 都可以
+  static let appDir = Bundle.main.bundleURL
   static let logDir = FileManager.default.temporaryDirectory.appending(component: "rime.senk", directoryHint: .isDirectory)
 
   // swiftlint:disable:next cyclomatic_complexity
