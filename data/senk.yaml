@@ -21,7 +21,7 @@ style:
   #color_scheme: solarized_light
   #color_scheme_dark: solarized_dark
 
-  # horizontal is Deprecated since 0.36, Squirrel 0.15, removed since 1.0.1
+  # horizontal is Deprecated since 0.36, 前端 0.15, removed since 1.0.1
   candidate_list_layout: stacked  # stacked | linear
   text_orientation: horizontal  # horizontal | vertical
   inline_preedit: true
@@ -50,7 +50,7 @@ style:
   # Nagetive means shrink, positive meas expand
   #surrounding_extra_expansion: 0
 
-  # format using %@ and %c is deprecated since 1.0, Squirrel 1.0
+  # format using %@ and %c is deprecated since 1.0, 前端 1.0
   # %@ is automatically expanded to "[candidate] [comment]"
   # and %c is replaced by "[label]"
   candidate_format: '[label]. [candidate] [comment]'
@@ -418,11 +418,11 @@ app_options:
   co.zeit.hyper:
     ascii_mode: true
   com.google.Chrome:
-    # 規避 https://github.com/rime/squirrel/issues/435
+    # 規避 上游前端 issue #435
     inline: true
   com.microsoft.edgemac:
-    # 規避 https://github.com/rime/squirrel/issues/906
+    # 規避 上游前端 issue #906
     inline: true
   ru.keepcoder.Telegram:
-    # 規避 https://github.com/rime/squirrel/issues/475
+    # 規避 上游前端 issue #475
     inline: true

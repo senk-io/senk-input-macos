@@ -34,7 +34,6 @@
 		448363DD25BDBBED0022C7BA /* pinyin.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 448363D925BDBBBF0022C7BA /* pinyin.yaml */; };
 		448363DE25BDBBED0022C7BA /* zhuyin.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 448363DA25BDBBBF0022C7BA /* zhuyin.yaml */; };
 		44986A95184B421700B3278D /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 44986A93184B421700B3278D /* LICENSE.txt */; };
-		44986A96184B421700B3278D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 44986A94184B421700B3278D /* README.md */; };
 		44AEBC7521F569FD00344375 /* key_bindings.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 44AEBC7221F569CF00344375 /* key_bindings.yaml */; };
 		44AEBC7621F569FD00344375 /* punctuation.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 44AEBC7121F569CF00344375 /* punctuation.yaml */; };
 		44CD640C15E2646B0021234E /* librime.1.dylib in Copy 3rd-party Frameworks */ = {isa = PBXBuildFile; fileRef = 44CD640915E2633D0021234E /* librime.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -79,13 +78,13 @@
 		7B5488C91D2DACDF0056A1BE /* symbols.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 7B54883B1D2DAAD10056A1BE /* symbols.yaml */; };
 		B3216E5C2BF438F800E292D2 /* rime.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B3216E5B2BF438F800E292D2 /* rime.pdf */; };
 		B35D2FE82BF00839009D156B /* BridgingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35D2FE72BF00839009D156B /* BridgingFunctions.swift */; };
-		B38E9B912BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E9B902BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift */; };
-		B38E9B952BEAFEFD0036ABEF /* SquirrelInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E9B942BEAFEFD0036ABEF /* SquirrelInputController.swift */; };
+		B38E9B912BE9AE1E0036ABEF /* SenkApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E9B902BE9AE1E0036ABEF /* SenkApplicationDelegate.swift */; };
+		B38E9B952BEAFEFD0036ABEF /* SenkInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E9B942BEAFEFD0036ABEF /* SenkInputController.swift */; };
 		B39771232BECEA150093A49B /* MacOSKeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771222BECEA150093A49B /* MacOSKeyCodes.swift */; };
-		B39771252BED899F0093A49B /* SquirrelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771242BED899F0093A49B /* SquirrelConfig.swift */; };
-		B39771272BED9B250093A49B /* SquirrelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771262BED9B250093A49B /* SquirrelTheme.swift */; };
-		B39771292BEDAF4A0093A49B /* SquirrelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771282BEDAF4A0093A49B /* SquirrelView.swift */; };
-		B397712B2BEE4C160093A49B /* SquirrelPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B397712A2BEE4C160093A49B /* SquirrelPanel.swift */; };
+		B39771252BED899F0093A49B /* SenkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771242BED899F0093A49B /* SenkConfig.swift */; };
+		B39771272BED9B250093A49B /* SenkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771262BED9B250093A49B /* SenkTheme.swift */; };
+		B39771292BEDAF4A0093A49B /* SenkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771282BEDAF4A0093A49B /* SenkView.swift */; };
+		B397712B2BEE4C160093A49B /* SenkPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B397712A2BEE4C160093A49B /* SenkPanel.swift */; };
 		B397712D2BEEB39D0093A49B /* InputSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B397712C2BEEB39D0093A49B /* InputSource.swift */; };
 		B397712F2BEECBED0093A49B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B397712E2BEECBED0093A49B /* Main.swift */; };
 		B39771312BEEE4540093A49B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B39771302BEEE4540093A49B /* InfoPlist.xcstrings */; };
@@ -291,16 +290,16 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
 		A4B8E1B20F645B870094E08B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		B3216E5B2BF438F800E292D2 /* rime.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = rime.pdf; path = resources/rime.pdf; sourceTree = "<group>"; };
-		B32B80772BE7FAA200FCF3BC /* Squirrel.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Squirrel.entitlements; path = resources/Squirrel.entitlements; sourceTree = "<group>"; };
+		B32B80772BE7FAA200FCF3BC /* Senk.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Senk.entitlements; path = resources/Senk.entitlements; sourceTree = "<group>"; };
 		B35D2FE72BF00839009D156B /* BridgingFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BridgingFunctions.swift; path = sources/BridgingFunctions.swift; sourceTree = "<group>"; };
-		B38E9B8F2BE9AE1E0036ABEF /* Squirrel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Squirrel-Bridging-Header.h"; path = "sources/Squirrel-Bridging-Header.h"; sourceTree = "<group>"; };
-		B38E9B902BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelApplicationDelegate.swift; path = sources/SquirrelApplicationDelegate.swift; sourceTree = "<group>"; };
-		B38E9B942BEAFEFD0036ABEF /* SquirrelInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelInputController.swift; path = sources/SquirrelInputController.swift; sourceTree = "<group>"; };
+		B38E9B8F2BE9AE1E0036ABEF /* Senk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Senk-Bridging-Header.h"; path = "sources/Senk-Bridging-Header.h"; sourceTree = "<group>"; };
+		B38E9B902BE9AE1E0036ABEF /* SenkApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkApplicationDelegate.swift; path = sources/SenkApplicationDelegate.swift; sourceTree = "<group>"; };
+		B38E9B942BEAFEFD0036ABEF /* SenkInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkInputController.swift; path = sources/SenkInputController.swift; sourceTree = "<group>"; };
 		B39771222BECEA150093A49B /* MacOSKeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacOSKeyCodes.swift; path = sources/MacOSKeyCodes.swift; sourceTree = "<group>"; };
-		B39771242BED899F0093A49B /* SquirrelConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelConfig.swift; path = sources/SquirrelConfig.swift; sourceTree = "<group>"; };
-		B39771262BED9B250093A49B /* SquirrelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelTheme.swift; path = sources/SquirrelTheme.swift; sourceTree = "<group>"; };
-		B39771282BEDAF4A0093A49B /* SquirrelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelView.swift; path = sources/SquirrelView.swift; sourceTree = "<group>"; };
-		B397712A2BEE4C160093A49B /* SquirrelPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelPanel.swift; path = sources/SquirrelPanel.swift; sourceTree = "<group>"; };
+		B39771242BED899F0093A49B /* SenkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkConfig.swift; path = sources/SenkConfig.swift; sourceTree = "<group>"; };
+		B39771262BED9B250093A49B /* SenkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkTheme.swift; path = sources/SenkTheme.swift; sourceTree = "<group>"; };
+		B39771282BEDAF4A0093A49B /* SenkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkView.swift; path = sources/SenkView.swift; sourceTree = "<group>"; };
+		B397712A2BEE4C160093A49B /* SenkPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SenkPanel.swift; path = sources/SenkPanel.swift; sourceTree = "<group>"; };
 		B397712C2BEEB39D0093A49B /* InputSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InputSource.swift; path = sources/InputSource.swift; sourceTree = "<group>"; };
 		B397712E2BEECBED0093A49B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Main.swift; path = sources/Main.swift; sourceTree = "<group>"; };
 		B39771302BEEE4540093A49B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = InfoPlist.xcstrings; path = resources/InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -329,17 +328,17 @@
 		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				B38E9B902BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift */,
-				B38E9B942BEAFEFD0036ABEF /* SquirrelInputController.swift */,
+				B38E9B902BE9AE1E0036ABEF /* SenkApplicationDelegate.swift */,
+				B38E9B942BEAFEFD0036ABEF /* SenkInputController.swift */,
 				B39771222BECEA150093A49B /* MacOSKeyCodes.swift */,
 				B397712C2BEEB39D0093A49B /* InputSource.swift */,
 				B397712E2BEECBED0093A49B /* Main.swift */,
-				B39771262BED9B250093A49B /* SquirrelTheme.swift */,
-				B397712A2BEE4C160093A49B /* SquirrelPanel.swift */,
-				B39771282BEDAF4A0093A49B /* SquirrelView.swift */,
-				B39771242BED899F0093A49B /* SquirrelConfig.swift */,
+				B39771262BED9B250093A49B /* SenkTheme.swift */,
+				B397712A2BEE4C160093A49B /* SenkPanel.swift */,
+				B39771282BEDAF4A0093A49B /* SenkView.swift */,
+				B39771242BED899F0093A49B /* SenkConfig.swift */,
 				B35D2FE72BF00839009D156B /* BridgingFunctions.swift */,
-				B38E9B8F2BE9AE1E0036ABEF /* Squirrel-Bridging-Header.h */,
+				B38E9B8F2BE9AE1E0036ABEF /* Senk-Bridging-Header.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -399,7 +398,7 @@
 				44986A94184B421700B3278D /* README.md */,
 				B39771322BEEE4540093A49B /* Localizable.xcstrings */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				B32B80772BE7FAA200FCF3BC /* Squirrel.entitlements */,
+				B32B80772BE7FAA200FCF3BC /* Senk.entitlements */,
 				B39771302BEEE4540093A49B /* InfoPlist.xcstrings */,
 				446C01D61F767BD400A6C23E /* Assets.xcassets */,
 				B3EF08E92F17125E00433A45 /* Rime.icon */,
@@ -583,7 +582,6 @@
 				B39771312BEEE4540093A49B /* InfoPlist.xcstrings in Resources */,
 				44986A95184B421700B3278D /* LICENSE.txt in Resources */,
 				B39771332BEEE4540093A49B /* Localizable.xcstrings in Resources */,
-				44986A96184B421700B3278D /* README.md in Resources */,
 				B3216E5C2BF438F800E292D2 /* rime.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -596,14 +594,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B39771232BECEA150093A49B /* MacOSKeyCodes.swift in Sources */,
-				B39771292BEDAF4A0093A49B /* SquirrelView.swift in Sources */,
-				B38E9B952BEAFEFD0036ABEF /* SquirrelInputController.swift in Sources */,
-				B39771252BED899F0093A49B /* SquirrelConfig.swift in Sources */,
+				B39771292BEDAF4A0093A49B /* SenkView.swift in Sources */,
+				B38E9B952BEAFEFD0036ABEF /* SenkInputController.swift in Sources */,
+				B39771252BED899F0093A49B /* SenkConfig.swift in Sources */,
 				B397712F2BEECBED0093A49B /* Main.swift in Sources */,
 				B397712D2BEEB39D0093A49B /* InputSource.swift in Sources */,
-				B397712B2BEE4C160093A49B /* SquirrelPanel.swift in Sources */,
-				B38E9B912BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift in Sources */,
-				B39771272BED9B250093A49B /* SquirrelTheme.swift in Sources */,
+				B397712B2BEE4C160093A49B /* SenkPanel.swift in Sources */,
+				B38E9B912BE9AE1E0036ABEF /* SenkApplicationDelegate.swift in Sources */,
+				B39771272BED9B250093A49B /* SenkTheme.swift in Sources */,
 				B35D2FE82BF00839009D156B /* BridgingFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -619,7 +617,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = resources/Squirrel.entitlements;
+				CODE_SIGN_ENTITLEMENTS = resources/Senk.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1.1.2;
@@ -661,7 +659,7 @@
 				PRODUCT_NAME = SenkWubi;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "sources/Squirrel-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "sources/Senk-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
@@ -676,7 +674,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = resources/Squirrel.entitlements;
+				CODE_SIGN_ENTITLEMENTS = resources/Senk.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.1.2;
 				DEAD_CODE_STRIPPING = YES;
@@ -716,7 +714,7 @@
 				PRODUCT_NAME = SenkWubi;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "sources/Squirrel-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "sources/Senk-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};

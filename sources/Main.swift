@@ -1,6 +1,6 @@
 //
 //  Main.swift
-//  Squirrel
+//  Senk
 //
 //  Created by Leo Liu on 5/10/24.
 //
@@ -9,7 +9,7 @@ import Foundation
 import InputMethodKit
 
 @main
-struct SquirrelApp {
+struct SenkApp {
   static let userDir = if let pwuid = getpwuid(getuid()) {
     URL(fileURLWithFileSystemRepresentation: pwuid.pointee.pw_dir, isDirectory: true, relativeTo: nil).appending(components: "Library", "Rime")
   } else {
@@ -24,14 +24,14 @@ struct SquirrelApp {
     let rimeAPI: RimeApi_stdbool = rime_get_api_stdbool().pointee
 
     let handled = autoreleasepool {
-      let installer = SquirrelInstaller()
+      let installer = SenkInstaller()
       let args = CommandLine.arguments
       if args.count > 1 {
         switch args[1] {
         case "--quit":
           let bundleId = Bundle.main.bundleIdentifier!
-          let runningSquirrels = NSRunningApplication.runningApplications(withBundleIdentifier: bundleId)
-          runningSquirrels.forEach { $0.terminate() }
+          let runningSenks = NSRunningApplication.runningApplications(withBundleIdentifier: bundleId)
+          runningSenks.forEach { $0.terminate() }
           return true
         case "--reload":
           DistributedNotificationCenter.default().postNotificationName(.init("SenkWubiReloadNotification"), object: nil)
@@ -41,7 +41,7 @@ struct SquirrelApp {
           return true
         case "--enable-input-source":
           if args.count > 2 {
-            let modes = args[2...].map { SquirrelInstaller.InputMode(rawValue: $0) }.compactMap { $0 }
+            let modes = args[2...].map { SenkInstaller.InputMode(rawValue: $0) }.compactMap { $0 }
             if !modes.isEmpty {
               installer.enable(modes: modes)
               return true
@@ -51,7 +51,7 @@ struct SquirrelApp {
           return true
         case "--disable-input-source":
           if args.count > 2 {
-            let modes = args[2...].map { SquirrelInstaller.InputMode(rawValue: $0) }.compactMap { $0 }
+            let modes = args[2...].map { SenkInstaller.InputMode(rawValue: $0) }.compactMap { $0 }
             if !modes.isEmpty {
               installer.disable(modes: modes)
               return true
@@ -60,7 +60,7 @@ struct SquirrelApp {
           installer.disable()
           return true
         case "--select-input-source":
-          if args.count > 2, let mode = SquirrelInstaller.InputMode(rawValue: args[2]) {
+          if args.count > 2, let mode = SenkInstaller.InputMode(rawValue: args[2]) {
             installer.select(mode: mode)
           } else {
             installer.select()
@@ -68,7 +68,7 @@ struct SquirrelApp {
           return true
         case "--build":
           // Notification
-          SquirrelApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_update", comment: ""))
+          SenkApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_update", comment: ""))
           // Build all schemas in current directory
           var builderTraits = RimeTraits.rimeStructInit()
           builderTraits.setCString("rime.senk-builder", to: \.app_name)
@@ -100,14 +100,14 @@ struct SquirrelApp {
       // load the bundle explicitly because in this case the input method is a
       // background only application
       let app = NSApplication.shared
-      let delegate = SquirrelApplicationDelegate()
+      let delegate = SenkApplicationDelegate()
       app.delegate = delegate
       app.setActivationPolicy(.accessory)
 
       // opencc will be configured with relative dictionary paths
       FileManager.default.changeCurrentDirectoryPath(main.sharedSupportPath!)
 
-      if NSApp.squirrelAppDelegate.problematicLaunchDetected() {
+      if NSApp.senkAppDelegate.problematicLaunchDetected() {
         print("Problematic launch detected!")
         let args = ["Problematic launch detected! SENK may be suffering a crash due to improper configuration. Revert previous modifications to see if the problem recurs."]
         let task = Process()
@@ -117,9 +117,9 @@ struct SquirrelApp {
         task.arguments = args
         try? task.run()
       } else {
-        NSApp.squirrelAppDelegate.setupRime()
-        NSApp.squirrelAppDelegate.startRime(fullCheck: false)
-        NSApp.squirrelAppDelegate.loadSettings()
+        NSApp.senkAppDelegate.setupRime()
+        NSApp.senkAppDelegate.startRime(fullCheck: false)
+        NSApp.senkAppDelegate.loadSettings()
         print("SENK reporting!")
       }
 

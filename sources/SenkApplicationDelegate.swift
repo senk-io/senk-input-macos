@@ -1,6 +1,6 @@
 //
-//  SquirrelApplicationDelegate.swift
-//  Squirrel
+//  SenkApplicationDelegate.swift
+//  Senk
 //
 //  Created by Leo Liu on 5/6/24.
 //
@@ -9,14 +9,14 @@ import UserNotifications
 import Sparkle
 import AppKit
 
-final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUStandardUserDriverDelegate, UNUserNotificationCenterDelegate {
+final class SenkApplicationDelegate: NSObject, NSApplicationDelegate, SPUStandardUserDriverDelegate, UNUserNotificationCenterDelegate {
   static let rimeWikiURL = URL(string: "https://github.com/rime/home/wiki")!
-  static let updateNotificationIdentifier = "SquirrelUpdateNotification"
-  static let notificationIdentifier = "SquirrelNotification"
+  static let updateNotificationIdentifier = "SenkUpdateNotification"
+  static let notificationIdentifier = "SenkNotification"
 
   let rimeAPI: RimeApi_stdbool = rime_get_api_stdbool().pointee
-  var config: SquirrelConfig?
-  var panel: SquirrelPanel?
+  var config: SenkConfig?
+  var panel: SenkPanel?
   var enableNotifications = false
   let updateController = SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: nil, userDriverDelegate: nil)
   var supportsGentleScheduledUpdateReminders: Bool {
@@ -53,7 +53,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   }
 
   func applicationWillFinishLaunching(_ notification: Notification) {
-    panel = SquirrelPanel(position: .zero)
+    panel = SenkPanel(position: .zero)
     addObservers()
   }
 
@@ -77,11 +77,11 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   }
 
   func openLogFolder() {
-    NSWorkspace.shared.open(SquirrelApp.logDir)
+    NSWorkspace.shared.open(SenkApp.logDir)
   }
 
   func openRimeFolder() {
-    NSWorkspace.shared.open(SquirrelApp.userDir)
+    NSWorkspace.shared.open(SenkApp.userDir)
   }
 
   // SENK五笔：不检查更新，更新只走本项目的安装脚本，避免被换回原版鼠须管
@@ -119,23 +119,23 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   }
 
   func setupRime() {
-    createDirIfNotExist(path: SquirrelApp.userDir)
-    createDirIfNotExist(path: SquirrelApp.logDir)
+    createDirIfNotExist(path: SenkApp.userDir)
+    createDirIfNotExist(path: SenkApp.logDir)
     // swiftlint:disable identifier_name
     let notification_handler: @convention(c) (UnsafeMutableRawPointer?, RimeSessionId, UnsafePointer<CChar>?, UnsafePointer<CChar>?) -> Void = notificationHandler
     let context_object = Unmanaged.passUnretained(self).toOpaque()
     // swiftlint:enable identifier_name
     rimeAPI.set_notification_handler(notification_handler, context_object)
 
-    var squirrelTraits = RimeTraits.rimeStructInit()
-    squirrelTraits.setCString(Bundle.main.sharedSupportPath!, to: \.shared_data_dir)
-    squirrelTraits.setCString(SquirrelApp.userDir.path(), to: \.user_data_dir)
-    squirrelTraits.setCString(SquirrelApp.logDir.path(), to: \.log_dir)
-    squirrelTraits.setCString("SenkWubi", to: \.distribution_code_name)
-    squirrelTraits.setCString("SENK五笔", to: \.distribution_name)
-    squirrelTraits.setCString(Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String, to: \.distribution_version)
-    squirrelTraits.setCString("rime.senk", to: \.app_name)
-    rimeAPI.setup(&squirrelTraits)
+    var senkTraits = RimeTraits.rimeStructInit()
+    senkTraits.setCString(Bundle.main.sharedSupportPath!, to: \.shared_data_dir)
+    senkTraits.setCString(SenkApp.userDir.path(), to: \.user_data_dir)
+    senkTraits.setCString(SenkApp.logDir.path(), to: \.log_dir)
+    senkTraits.setCString("SenkWubi", to: \.distribution_code_name)
+    senkTraits.setCString("SENK五笔", to: \.distribution_name)
+    senkTraits.setCString(Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String, to: \.distribution_version)
+    senkTraits.setCString("rime.senk", to: \.app_name)
+    rimeAPI.setup(&senkTraits)
   }
 
   func startRime(fullCheck: Bool) {
@@ -143,7 +143,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     rimeAPI.initialize(nil)
     // check for configuration updates
     if rimeAPI.start_maintenance(fullCheck) {
-      // update squirrel config
+      // update senk config
       // print("[DEBUG] maintenance suceeds")
       _ = rimeAPI.deploy_config_file("senk.yaml", "config_version")
     } else {
@@ -152,7 +152,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   }
 
   func loadSettings() {
-    config = SquirrelConfig()
+    config = SenkConfig()
     if !config!.openBaseConfig() {
       return
     }
@@ -168,7 +168,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     if schemaID.count == 0 || schemaID.first == "." {
       return
     }
-    let schema = SquirrelConfig()
+    let schema = SenkConfig()
     if let panel = panel, let config = self.config {
       if schema.open(schemaID: schemaID, baseConfig: config) && schema.has(section: "style") {
         panel.load(config: schema, forDarkMode: false)
@@ -232,18 +232,18 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
 }
 
 private func notificationHandler(contextObject: UnsafeMutableRawPointer?, sessionId: RimeSessionId, messageTypeC: UnsafePointer<CChar>?, messageValueC: UnsafePointer<CChar>?) {
-  let delegate: SquirrelApplicationDelegate = Unmanaged<SquirrelApplicationDelegate>.fromOpaque(contextObject!).takeUnretainedValue()
+  let delegate: SenkApplicationDelegate = Unmanaged<SenkApplicationDelegate>.fromOpaque(contextObject!).takeUnretainedValue()
 
   let messageType = messageTypeC.map { String(cString: $0) }
   let messageValue = messageValueC.map { String(cString: $0) }
   if messageType == "deploy" {
     switch messageValue {
     case "start":
-      SquirrelApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_start", comment: ""))
+      SenkApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_start", comment: ""))
     case "success":
-      SquirrelApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_success", comment: ""))
+      SenkApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_success", comment: ""))
     case "failure":
-      SquirrelApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_failure", comment: ""))
+      SenkApplicationDelegate.showMessage(msgText: NSLocalizedString("deploy_failure", comment: ""))
     default:
       break
     }
@@ -276,7 +276,7 @@ private func notificationHandler(contextObject: UnsafeMutableRawPointer?, sessio
   }
 }
 
-private extension SquirrelApplicationDelegate {
+private extension SenkApplicationDelegate {
   func showStatusMessage(msgTextLong: String?, msgTextShort: String?) {
     if !(msgTextLong ?? "").isEmpty || !(msgTextShort ?? "").isEmpty {
       panel?.updateStatus(long: msgTextLong ?? "", short: msgTextShort ?? "")
@@ -316,7 +316,7 @@ private extension SquirrelApplicationDelegate {
 }
 
 extension NSApplication {
-  var squirrelAppDelegate: SquirrelApplicationDelegate {
-    self.delegate as! SquirrelApplicationDelegate
+  var senkAppDelegate: SenkApplicationDelegate {
+    self.delegate as! SenkApplicationDelegate
   }
 }

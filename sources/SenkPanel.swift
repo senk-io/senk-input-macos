@@ -1,16 +1,16 @@
 //
-//  SquirrelPanel.swift
-//  Squirrel
+//  SenkPanel.swift
+//  Senk
 //
 //  Created by Leo Liu on 5/10/24.
 //
 
 import AppKit
 
-final class SquirrelPanel: NSPanel {
-  private let view: SquirrelView
+final class SenkPanel: NSPanel {
+  private let view: SenkView
   private let back: NSVisualEffectView
-  var inputController: SquirrelInputController?
+  var inputController: SenkInputController?
 
   var position: NSRect
   private var screenRect: NSRect = .zero
@@ -35,7 +35,7 @@ final class SquirrelPanel: NSPanel {
 
   init(position: NSRect) {
     self.position = position
-    self.view = SquirrelView(frame: position)
+    self.view = SenkView(frame: position)
     self.back = NSVisualEffectView()
     super.init(contentRect: position, styleMask: .nonactivatingPanel, backing: .buffered, defer: true)
     self.level = .init(Int(CGShieldingWindowLevel()))
@@ -305,18 +305,18 @@ final class SquirrelPanel: NSPanel {
     }
   }
 
-  func load(config: SquirrelConfig, forDarkMode isDark: Bool) {
+  func load(config: SenkConfig, forDarkMode isDark: Bool) {
     if isDark {
-      view.darkTheme = SquirrelTheme()
+      view.darkTheme = SenkTheme()
       view.darkTheme.load(config: config, dark: true)
     } else {
-      view.lightTheme = SquirrelTheme()
+      view.lightTheme = SenkTheme()
       view.lightTheme.load(config: config, dark: isDark)
     }
   }
 }
 
-private extension SquirrelPanel {
+private extension SenkPanel {
   func mousePosition() -> NSPoint {
     var point = NSEvent.mouseLocation
     point = self.convertPoint(fromScreen: point)
@@ -347,7 +347,7 @@ private extension SquirrelPanel {
   }
 
   // Get the window size, the windows will be the dirtyRect in
-  // SquirrelView.drawRect
+  // SenkView.drawRect
   // swiftlint:disable:next cyclomatic_complexity
   func show() {
     currentScreen()
@@ -384,12 +384,12 @@ private extension SquirrelPanel {
       // To avoid jumping up and down while typing, use the lower screen when
       // typing on upper, and vice versa
       if position.midY / screenRect.height >= 0.5 {
-        panelRect.origin.y = position.minY - SquirrelTheme.offsetHeight - panelRect.height + theme.pagingOffset
+        panelRect.origin.y = position.minY - SenkTheme.offsetHeight - panelRect.height + theme.pagingOffset
       } else {
-        panelRect.origin.y = position.maxY + SquirrelTheme.offsetHeight
+        panelRect.origin.y = position.maxY + SenkTheme.offsetHeight
       }
       // Make the first candidate fixed at the left of cursor
-      panelRect.origin.x = position.minX - panelRect.width - SquirrelTheme.offsetHeight
+      panelRect.origin.x = position.minX - panelRect.width - SenkTheme.offsetHeight
       if view.preeditRange.length > 0, let preeditTextRange = view.convert(range: view.preeditRange) {
         let preeditRect = view.contentRect(range: preeditTextRange)
         panelRect.origin.x += preeditRect.height + theme.edgeInset.width
@@ -398,7 +398,7 @@ private extension SquirrelPanel {
       panelRect.size = NSSize(width: min(0.95 * screenRect.width, contentRect.width + theme.edgeInset.width * 2),
                               height: min(0.95 * screenRect.height, contentRect.height + theme.edgeInset.height * 2))
       panelRect.size.width += theme.pagingOffset
-      panelRect.origin = NSPoint(x: position.minX - theme.pagingOffset, y: position.minY - SquirrelTheme.offsetHeight - panelRect.height)
+      panelRect.origin = NSPoint(x: position.minX - theme.pagingOffset, y: position.minY - SenkTheme.offsetHeight - panelRect.height)
     }
     if panelRect.maxX > screenRect.maxX {
       panelRect.origin.x = screenRect.maxX - panelRect.width
@@ -410,7 +410,7 @@ private extension SquirrelPanel {
       if vertical {
         panelRect.origin.y = screenRect.minY
       } else {
-        panelRect.origin.y = position.maxY + SquirrelTheme.offsetHeight
+        panelRect.origin.y = position.maxY + SenkTheme.offsetHeight
       }
     }
     if panelRect.maxY > screenRect.maxY {
@@ -463,7 +463,7 @@ private extension SquirrelPanel {
     show()
 
     statusTimer?.invalidate()
-    statusTimer = Timer.scheduledTimer(withTimeInterval: SquirrelTheme.showStatusDuration, repeats: false) { _ in
+    statusTimer = Timer.scheduledTimer(withTimeInterval: SenkTheme.showStatusDuration, repeats: false) { _ in
       self.hide()
     }
   }

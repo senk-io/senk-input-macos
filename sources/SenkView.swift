@@ -1,13 +1,13 @@
 //
-//  SquirrelView.swift
-//  Squirrel
+//  SenkView.swift
+//  Senk
 //
 //  Created by Leo Liu on 5/9/24.
 //
 
 import AppKit
 
-private class SquirrelLayoutDelegate: NSObject, NSTextLayoutManagerDelegate {
+private class SenkLayoutDelegate: NSObject, NSTextLayoutManagerDelegate {
   func textLayoutManager(_ textLayoutManager: NSTextLayoutManager, shouldBreakLineBefore location: any NSTextLocation, hyphenating: Bool) -> Bool {
     let index = textLayoutManager.offset(from: textLayoutManager.documentRange.location, to: location)
     if let attributes = textLayoutManager.textContainer?.textView?.textContentStorage?.attributedString?.attributes(at: index, effectiveRange: nil),
@@ -22,10 +22,10 @@ extension NSAttributedString.Key {
   static let noBreak = NSAttributedString.Key("noBreak")
 }
 
-final class SquirrelView: NSView {
+final class SenkView: NSView {
   let textView: NSTextView
 
-  private let squirrelLayoutDelegate: SquirrelLayoutDelegate
+  private let senkLayoutDelegate: SenkLayoutDelegate
   var candidateRanges: [NSRange] = []
   var hilightedIndex = 0
   var preeditRange: NSRange = .empty
@@ -37,9 +37,9 @@ final class SquirrelView: NSView {
   private var downPath: CGPath?
   private var upPath: CGPath?
 
-  var lightTheme = SquirrelTheme()
-  var darkTheme = SquirrelTheme()
-  var currentTheme: SquirrelTheme {
+  var lightTheme = SenkTheme()
+  var darkTheme = SenkTheme()
+  var currentTheme: SenkTheme {
     if isDark && darkTheme.available { darkTheme } else { lightTheme }
   }
   var textLayoutManager: NSTextLayoutManager {
@@ -53,12 +53,12 @@ final class SquirrelView: NSView {
   }
 
   override init(frame frameRect: NSRect) {
-    squirrelLayoutDelegate = SquirrelLayoutDelegate()
+    senkLayoutDelegate = SenkLayoutDelegate()
     textView = NSTextView(frame: frameRect)
     textView.drawsBackground = false
     textView.isEditable = false
     textView.isSelectable = false
-    textView.textLayoutManager?.delegate = squirrelLayoutDelegate
+    textView.textLayoutManager?.delegate = senkLayoutDelegate
     super.init(frame: frameRect)
     textContainer.lineFragmentPadding = 0
     self.wantsLayer = true
@@ -349,7 +349,7 @@ final class SquirrelView: NSView {
   }
 }
 
-private extension SquirrelView {
+private extension SenkView {
   // A tweaked sign function, to winddown corner radius when the size is small
   func sign(_ number: NSPoint) -> NSPoint {
     if number.length >= 2 {
@@ -732,7 +732,7 @@ private extension SquirrelView {
      NSPoint(x: center.x - 0.5 * sqrt(3) * radius, y: center.y - 0.5 * radius)]
   }
 
-  func pagingLayer(theme: SquirrelTheme, preeditRect: CGRect) -> (CAShapeLayer, CGPath?, CGPath?) {
+  func pagingLayer(theme: SenkTheme, preeditRect: CGRect) -> (CAShapeLayer, CGPath?, CGPath?) {
     let layer = CAShapeLayer()
     guard theme.showPaging && (canPageUp || canPageDown) else { return (layer, nil, nil) }
     guard let firstCandidate = candidateRanges.first, let range = convert(range: firstCandidate) else { return (layer, nil, nil) }

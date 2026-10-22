@@ -1,13 +1,13 @@
 //
-//  SquirrelTheme.swift
-//  Squirrel
+//  SenkTheme.swift
+//  Senk
 //
 //  Created by Leo Liu on 5/9/24.
 //
 
 import AppKit
 
-final class SquirrelTheme {
+final class SenkTheme {
   static let offsetHeight: CGFloat = 5
   static let defaultFontSize: CGFloat = NSFont.systemFontSize
   static let showStatusDuration: Double = 1.2
@@ -191,7 +191,7 @@ final class SquirrelTheme {
     }
   }
 
-  func load(config: SquirrelConfig, dark: Bool) {
+  func load(config: SenkConfig, dark: Bool) {
     linear ?= config.getString("style/candidate_list_layout").map { $0 == "linear" }
     vertical ?= config.getString("style/text_orientation").map { $0 == "vertical" }
     inlinePreedit ?= config.getBool("style/inline_preedit")
@@ -286,7 +286,7 @@ final class SquirrelTheme {
   }
 }
 
-private extension SquirrelTheme {
+private extension SenkTheme {
   func combineFonts(_ fonts: [NSFont], size: CGFloat?) -> NSFont? {
     if fonts.count == 0 { return nil }
     if fonts.count == 1 {

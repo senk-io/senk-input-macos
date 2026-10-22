@@ -1,19 +1,19 @@
 //
-//  SquirrelConfig.swift
-//  Squirrel
+//  SenkConfig.swift
+//  Senk
 //
 //  Created by Leo Liu on 5/9/24.
 //
 
 import AppKit
 
-final class SquirrelConfig {
+final class SenkConfig {
   private let rimeAPI: RimeApi_stdbool = rime_get_api_stdbool().pointee
   private(set) var isOpen = false
 
   private var cache: [String: Any] = [:]
   private var config: RimeConfig = .init()
-  private var baseConfig: SquirrelConfig?
+  private var baseConfig: SenkConfig?
 
   func openBaseConfig() -> Bool {
     close()
@@ -21,7 +21,7 @@ final class SquirrelConfig {
     return isOpen
   }
 
-  func open(schemaID: String, baseConfig: SquirrelConfig?) -> Bool {
+  func open(schemaID: String, baseConfig: SenkConfig?) -> Bool {
     close()
     isOpen = rimeAPI.schema_open(schemaID, &config)
     if isOpen {
@@ -88,7 +88,7 @@ final class SquirrelConfig {
     return baseConfig?.getString(option)
   }
 
-  func getColor(_ option: String, inSpace colorSpace: SquirrelTheme.RimeColorSpace) -> NSColor? {
+  func getColor(_ option: String, inSpace colorSpace: SenkTheme.RimeColorSpace) -> NSColor? {
     if let cachedValue = cachedValue(of: NSColor.self, forKey: option) {
       return cachedValue
     }
@@ -115,12 +115,12 @@ final class SquirrelConfig {
   }
 }
 
-private extension SquirrelConfig {
+private extension SenkConfig {
   func cachedValue<T>(of: T.Type, forKey key: String) -> T? {
     return cache[key] as? T
   }
 
-  func color(from colorStr: String, inSpace colorSpace: SquirrelTheme.RimeColorSpace) -> NSColor? {
+  func color(from colorStr: String, inSpace colorSpace: SenkTheme.RimeColorSpace) -> NSColor? {
     if let matched = try? /0x([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})/.wholeMatch(in: colorStr) {
       let (_, alpha, blue, green, red) = matched.output
       return color(alpha: Int(alpha, radix: 16)!, red: Int(red, radix: 16)!, green: Int(green, radix: 16)!, blue: Int(blue, radix: 16)!, colorSpace: colorSpace)
@@ -132,7 +132,7 @@ private extension SquirrelConfig {
     }
   }
 
-  func color(alpha: Int, red: Int, green: Int, blue: Int, colorSpace: SquirrelTheme.RimeColorSpace) -> NSColor {
+  func color(alpha: Int, red: Int, green: Int, blue: Int, colorSpace: SenkTheme.RimeColorSpace) -> NSColor {
     switch colorSpace {
     case .displayP3:
       return NSColor(displayP3Red: CGFloat(red) / 255,

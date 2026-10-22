@@ -1,6 +1,6 @@
 //
-//  SquirrelInputController.swift
-//  Squirrel
+//  SenkInputController.swift
+//  Senk
 //
 //  Created by Leo Liu on 5/7/24.
 //
@@ -8,7 +8,7 @@
 import Carbon
 import InputMethodKit
 
-final class SquirrelInputController: IMKInputController {
+final class SenkInputController: IMKInputController {
   private static let keyRollOver = 50
   private static var unknownAppCnt: UInt = 0
 
@@ -23,16 +23,16 @@ final class SquirrelInputController: IMKInputController {
   private var inlinePreedit = false
   private var inlineCandidate = false
   // for chord-typing
-  private var chordKeyCodes: [UInt32] = .init(repeating: 0, count: SquirrelInputController.keyRollOver)
-  private var chordModifiers: [UInt32] = .init(repeating: 0, count: SquirrelInputController.keyRollOver)
+  private var chordKeyCodes: [UInt32] = .init(repeating: 0, count: SenkInputController.keyRollOver)
+  private var chordModifiers: [UInt32] = .init(repeating: 0, count: SenkInputController.keyRollOver)
   private var chordKeyCount: Int = 0
   private var chordTimer: Timer?
   private var chordDuration: TimeInterval = 0
   private var currentApp: String = ""
   // SENK：系统输入法菜单里的两个输入模式各对应一个方案；新建会话时沿用最近选择的模式
   private static let schemaForMode = [
-    SquirrelInstaller.InputMode.wubi.rawValue: "wubi86_pinyin",
-    SquirrelInstaller.InputMode.pinyin.rawValue: "senk_pinyin"
+    SenkInstaller.InputMode.wubi.rawValue: "wubi86_pinyin",
+    SenkInstaller.InputMode.pinyin.rawValue: "senk_pinyin"
   ]
   private static var modeSchema: String?
 
@@ -68,10 +68,10 @@ final class SquirrelInputController: IMKInputController {
         break
       }
       // print("[DEBUG] FLAGSCHANGED client: \(sender ?? "nil"), modifiers: \(modifiers)")
-      var rimeModifiers: UInt32 = SquirrelKeycode.osxModifiersToRime(modifiers: modifiers)
+      var rimeModifiers: UInt32 = SenkKeycode.osxModifiersToRime(modifiers: modifiers)
       // For flags-changed event, keyCode is available since macOS 10.15
       // (#715)
-      let rimeKeycode: UInt32 = SquirrelKeycode.osxKeycodeToRime(keycode: event.keyCode, keychar: nil, shift: false, caps: false)
+      let rimeKeycode: UInt32 = SenkKeycode.osxKeycodeToRime(keycode: event.keyCode, keychar: nil, shift: false, caps: false)
 
       if changes.contains(.capsLock) {
         // NOTE: rime assumes XK_Caps_Lock to be sent before modifier changes,
@@ -122,11 +122,11 @@ final class SquirrelInputController: IMKInputController {
 
       // translate osx keyevents to rime keyevents
       if let char = keyChars?.first {
-        let rimeKeycode = SquirrelKeycode.osxKeycodeToRime(keycode: keyCode, keychar: char,
+        let rimeKeycode = SenkKeycode.osxKeycodeToRime(keycode: keyCode, keychar: char,
                                                            shift: modifiers.contains(.shift),
                                                            caps: modifiers.contains(.capsLock))
         if rimeKeycode != 0 {
-          let rimeModifiers = SquirrelKeycode.osxModifiersToRime(modifiers: modifiers)
+          let rimeModifiers = SenkKeycode.osxModifiersToRime(modifiers: modifiers)
           handled = processKey(rimeKeycode, modifiers: rimeModifiers)
           rimeUpdate()
         }
@@ -184,7 +184,7 @@ final class SquirrelInputController: IMKInputController {
   override func activateServer(_ sender: Any!) {
     self.client ?= sender as? IMKTextInput
     // print("[DEBUG] activateServer:")
-    var keyboardLayout = NSApp.squirrelAppDelegate.config?.getString("keyboard_layout") ?? ""
+    var keyboardLayout = NSApp.senkAppDelegate.config?.getString("keyboard_layout") ?? ""
     if keyboardLayout == "last" || keyboardLayout == "" {
       keyboardLayout = ""
     } else if keyboardLayout == "default" {
@@ -242,7 +242,7 @@ final class SquirrelInputController: IMKInputController {
   }
 
   override func hidePalettes() {
-    NSApp.squirrelAppDelegate.panel?.hide()
+    NSApp.senkAppDelegate.panel?.hide()
     super.hidePalettes()
   }
 
@@ -292,27 +292,27 @@ final class SquirrelInputController: IMKInputController {
   }
 
   @objc func deploy() {
-    NSApp.squirrelAppDelegate.deploy()
+    NSApp.senkAppDelegate.deploy()
   }
 
   @objc func syncUserData() {
-    NSApp.squirrelAppDelegate.syncUserData()
+    NSApp.senkAppDelegate.syncUserData()
   }
 
   @objc func openLogFolder() {
-    NSApp.squirrelAppDelegate.openLogFolder()
+    NSApp.senkAppDelegate.openLogFolder()
   }
 
   @objc func openRimeFolder() {
-    NSApp.squirrelAppDelegate.openRimeFolder()
+    NSApp.senkAppDelegate.openRimeFolder()
   }
 
   @objc func checkForUpdates() {
-    NSApp.squirrelAppDelegate.checkForUpdates()
+    NSApp.senkAppDelegate.checkForUpdates()
   }
 
   @objc func openWiki() {
-    NSApp.squirrelAppDelegate.openWiki()
+    NSApp.senkAppDelegate.openWiki()
   }
 
   deinit {
@@ -320,7 +320,7 @@ final class SquirrelInputController: IMKInputController {
   }
 }
 
-private extension SquirrelInputController {
+private extension SenkInputController {
 
   func onChordTimer(_: Timer) {
     // chord release triggered by timer
@@ -357,7 +357,7 @@ private extension SquirrelInputController {
       timer.invalidate()
     }
     chordDuration = 0.1
-    if let duration = NSApp.squirrelAppDelegate.config?.getDouble("chord_duration"), duration > 0 {
+    if let duration = NSApp.senkAppDelegate.config?.getDouble("chord_duration"), duration > 0 {
       chordDuration = duration
     }
     chordTimer = Timer.scheduledTimer(withTimeInterval: chordDuration, repeats: false, block: onChordTimer)
@@ -375,8 +375,8 @@ private extension SquirrelInputController {
 
   func createSession() {
     let app = client?.bundleIdentifier() ?? {
-      SquirrelInputController.unknownAppCnt &+= 1
-      return "UnknownApp\(SquirrelInputController.unknownAppCnt)"
+      SenkInputController.unknownAppCnt &+= 1
+      return "UnknownApp\(SenkInputController.unknownAppCnt)"
     }()
     print("createSession: \(app)")
     currentApp = app
@@ -395,7 +395,7 @@ private extension SquirrelInputController {
     if currentApp == "" {
       return
     }
-    if let appOptions = NSApp.squirrelAppDelegate.config?.getAppOptions(currentApp) {
+    if let appOptions = NSApp.senkAppDelegate.config?.getAppOptions(currentApp) {
       for (key, value) in appOptions {
         print("set app option: \(key) = \(value)")
         rimeAPI.set_option(session, key, value)
@@ -416,7 +416,7 @@ private extension SquirrelInputController {
     // TODO add special key event preprocessing here
 
     // with linear candidate list, arrow keys may behave differently.
-    if let panel = NSApp.squirrelAppDelegate.panel {
+    if let panel = NSApp.senkAppDelegate.panel {
       if panel.linear != rimeAPI.get_option(session, "_linear") {
         rimeAPI.set_option(session, "_linear", panel.linear)
       }
@@ -477,9 +477,9 @@ private extension SquirrelInputController {
       // swiftlint:disable:next identifier_name
       if let schema_id = status.schema_id, schemaId == "" || schemaId != String(cString: schema_id) {
         schemaId = String(cString: schema_id)
-        NSApp.squirrelAppDelegate.loadSettings(for: schemaId)
+        NSApp.senkAppDelegate.loadSettings(for: schemaId)
         // inline preedit
-        if let panel = NSApp.squirrelAppDelegate.panel {
+        if let panel = NSApp.senkAppDelegate.panel {
           inlinePreedit = (panel.inlinePreedit && !rimeAPI.get_option(session, "no_inline")) || rimeAPI.get_option(session, "inline")
           inlineCandidate = panel.inlineCandidate && !rimeAPI.get_option(session, "no_inline")
           // if not inline, embed soft cursor in preedit string
@@ -625,7 +625,7 @@ private extension SquirrelInputController {
     guard let client = client else { return }
     var inputPos = NSRect()
     client.attributes(forCharacterIndex: 0, lineHeightRectangle: &inputPos)
-    if let panel = NSApp.squirrelAppDelegate.panel {
+    if let panel = NSApp.senkAppDelegate.panel {
       panel.position = inputPos
       panel.inputController = self
       panel.update(preedit: preedit, selRange: selRange, caretPos: caretPos, candidates: candidates, comments: comments, labels: labels,

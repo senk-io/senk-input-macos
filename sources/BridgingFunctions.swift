@@ -1,6 +1,6 @@
 //
 //  BridgingFunctions.swift
-//  Squirrel
+//  Senk
 //
 //  Created by Leo Liu on 5/11/24.
 //

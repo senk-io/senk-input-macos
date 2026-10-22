@@ -1,6 +1,6 @@
 //
 //  InputSource.swift
-//  Squirrel
+//  Senk
 //
 //  Created by Leo Liu on 5/10/24.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import InputMethodKit
 
-final class SquirrelInstaller {
+final class SenkInstaller {
   enum InputMode: String, CaseIterable {
     static let primary = Self.wubi
     case wubi = "io.senk.inputmethod.SenkWubi.Wubi"
@@ -47,8 +47,8 @@ final class SquirrelInstaller {
       // Already registered.
       return
     }
-    TISRegisterInputSource(SquirrelApp.appDir as CFURL)
-    print("Registered input source from \(SquirrelApp.appDir)")
+    TISRegisterInputSource(SenkApp.appDir as CFURL)
+    print("Registered input source from \(SenkApp.appDir)")
   }
 
   func enable(modes: [InputMode] = []) {
